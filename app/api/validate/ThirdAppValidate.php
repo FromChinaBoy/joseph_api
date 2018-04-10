@@ -12,12 +12,13 @@ namespace app\api\validate;
 class ThirdAppValidate extends BaseValidate
 {
     protected $rule =[
-        'ac' => 'require|isNotEmpty',
+        'ac' => 'require|isNotEmpty|isMobile',
         'se' => 'require|isNotEmpty'
     ];
 
     protected $message = [
         'ac' => '帐号不能为空',
-        'se' => '密码不能为空'
+        'se' => '密码不能为空',
+        'ac.isMobile' => '账号格式有误'
     ];
 }

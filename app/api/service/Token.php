@@ -57,7 +57,7 @@ class Token
         return $uid;
     }
 
-    //需要普通权限
+    //有权限
     public static function needPrimaryScope(){
         $scope = self::getCurrentTokenVar('scope');
         if($scope){
@@ -71,7 +71,7 @@ class Token
         }
     }
 
-    //只有
+    //只能是用户权限，管理员不能进入
     public static function needExclusiveScope(){
         $scope = self::getCurrentTokenVar('scope');
         if($scope){

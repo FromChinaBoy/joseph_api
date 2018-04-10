@@ -18,9 +18,9 @@ use app\lib\exception\UserException;
 
 class Address extends BaseController
 {
-//    protected $beforeActionList =[
-//        'needPrimaryScope'=>['only'=>'CreateorUpdateAddress']
-//    ];
+    protected $beforeActionList =[
+        'needPrimaryScope'=>['only'=>'CreateorUpdateAddress']
+    ];
 
     public function CreateorUpdateAddress(){
         $AddressValidate = new AddressValidate();

@@ -79,3 +79,9 @@ function getRandChar($length){
 
     return $str;
 }
+
+function dd($val){
+    echo "<pre>";
+    print_r($val);
+    echo "</pre>";exit;
+}

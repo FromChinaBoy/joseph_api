@@ -17,17 +17,18 @@ use app\api\service\Token as TokenService;
 
 class Token
 {
+    //微信小程序登录
     public function getToken($code = ''){
         (new TokenGet())->goCheck();
         $tk = new UserToken($code);
         $token =$tk->get();
-//        $token =UserToken::get();
         return json([
            'token' => $token,
         ]);
 
     }
 
+    //手机账号登录
     public function getAppToken($ac = '',$se = ''){
         (new ThirdAppValidate())->goCheck();
         $app = new AppToken();

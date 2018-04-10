@@ -41,3 +41,8 @@ Route::put('api/:version/order/delivery','api/:version.Order/delivery');
 //pay
 Route::post('api/:version/pay/pre_order','api/:version.Pay/pre_order');
 Route::post('api/:version/pay/notify','api/:version.Pay/receiveNotify');
+
+
+//user
+Route::any('api/:version/userinfo','api/:version.User/getById');
+Route::any('api/:version/get_setting','api/:version.User/getSetting');
