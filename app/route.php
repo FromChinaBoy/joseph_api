@@ -44,5 +44,9 @@ Route::post('api/:version/pay/notify','api/:version.Pay/receiveNotify');
 
 
 //user
-Route::any('api/:version/userinfo','api/:version.User/getById');
-Route::any('api/:version/get_setting','api/:version.User/getSetting');
+Route::post('api/:version/user/userinfo','api/:version.User/getById');
+Route::post('api/:version/user/get_setting','api/:version.Setting/getSetting');
+Route::post('api/:version/user/get_ex_setting','api/:version.Setting/getExSetting');
+
+Route::post('api/:version/user/update_base','api/:version.User/updateUserBase');
+

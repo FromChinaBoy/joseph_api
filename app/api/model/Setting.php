@@ -16,8 +16,9 @@ class Setting extends BaseModel
 
     ];
     public function briefAddress(){
-        return $this->hasOne('UserAddress','user_id','user_id');
+        return $this->hasOne('UserAddress','user_id','user_id')->field('address,user_id')->where('is_default','=',1);
     }
+
     public function address(){
         return $this->hasMany('UserAddress','user_id','user_id');
     }

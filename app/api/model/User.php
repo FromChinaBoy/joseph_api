@@ -9,8 +9,13 @@
 namespace app\api\model;
 
 
+use app\api\service\Token;
+
 class User extends BaseModel
 {
+
+    protected $autoWriteTimestamp = 'datetime';
+    // 定义时间戳字段名
 
     public function image(){
         return $this->hasMany('UserImage','user_id','id');
@@ -36,6 +41,16 @@ class User extends BaseModel
 
     public static function getUserInfo($id){
         return self::with('image,interest,answer')->where('id','=',$id)->find();
+    }
+
+    public static function UpdateBase($post){
+
+        $data['nickname'] = $post['nickname'];
+        $data['birthday'] = $post['birthday'];
+        $data['update_time'] = date('Y-m-d H:i:s');
+        $id = 1;
+        return self::where('id','=',$id)->update($data);
+
     }
 
 }

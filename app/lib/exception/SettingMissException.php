@@ -13,7 +13,7 @@ namespace app\lib\exception;
 class SettingMissException extends BaseException
 {
     public $code = 404;
-    public $msg = '请求的Setting不存在';
+    public $msg = '该用户的配置不存在';
     public $errorCode = '60002';
 
 }
