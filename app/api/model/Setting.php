@@ -26,4 +26,8 @@ class Setting extends BaseModel
     public static function getSetting($id){
         return self::with('briefAddress')->where('user_id','=',$id)->find();
     }
+
+    public static function getSettingByVal($id,$val){
+        return self::where('user_id','=',$id)->value($val);
+    }
 }

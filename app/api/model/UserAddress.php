@@ -11,5 +11,12 @@ namespace app\api\model;
 
 class UserAddress extends BaseModel
 {
+    protected function user(){
+        return '';
+    }
+
+    public function getUser(){
+
+    }
 
 }

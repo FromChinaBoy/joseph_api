@@ -80,6 +80,50 @@ function getRandChar($length){
     return $str;
 }
 
+/**
+ *转载自：http://www.jb51.net/article/56967.htm
+ * @desc 根据两点间的经纬度计算距离
+ * @param float $lat 纬度值
+ * @param float $lng 经度值
+ */
+function getDistance($lat1, $lng1, $lat2, $lng2){
+    $earthRadius = 6367000; //approximate radius of earth in meters
+    $lat1 = ($lat1 * pi() ) / 180;
+    $lng1 = ($lng1 * pi() ) / 180;
+    $lat2 = ($lat2 * pi() ) / 180;
+    $lng2 = ($lng2 * pi() ) / 180;
+    $calcLongitude = $lng2 - $lng1;
+    $calcLatitude = $lat2 - $lat1;
+    $stepOne = pow(sin($calcLatitude / 2), 2) + cos($lat1) * cos($lat2) * pow(sin($calcLongitude / 2), 2);
+    $stepTwo = 2 * asin(min(1, sqrt($stepOne)));
+    $calculatedDistance = $earthRadius * $stepTwo;
+    return round($calculatedDistance);
+}
+
+
+//根据IP获取经纬度
+function get_lat_and_lng_ByIP($ip)
+{
+    if(empty($ip))
+    {
+        return ['status'=>-1,'msg'=>'IP不能为空'];
+    }
+    $ak = config('setting.baidu_key');
+    $content = file_get_contents("http://api.map.baidu.com/location/ip?ip=$ip&ak=$ak&coor=bd09ll");
+    $rst = json_decode(object2array($content),true);
+
+    if($rst['status'] == 1){
+        return ['status'=>-1,'msg'=>$rst['message']];
+    }
+
+    return ['status'=>1,'result'=>$rst['content']];
+}
+
+function object2array(&$object) {
+    $object =  json_decode( json_encode( $object),true);
+    return  $object;
+}
+
 function dd($val){
     echo "<pre>";
     print_r($val);

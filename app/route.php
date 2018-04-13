@@ -50,3 +50,6 @@ Route::post('api/:version/user/get_ex_setting','api/:version.Setting/getExSettin
 
 Route::post('api/:version/user/update_base','api/:version.User/updateUserBase');
 
+
+//match
+Route::any('api/:version/match/get_user','api/:version.Match/getUser');
