@@ -10,12 +10,16 @@
 namespace app\api\service;
 
 use app\api\model\Setting as SettingModel;
+use app\lib\exception\MatchException;
 use app\lib\exception\UserException;
 use think\Db;
+use app\api\model\Match as MatchModel;
 
 class Match
 {
     public static function getWaitToMatchData($id = 0){
+        //匹配上的不能再次出现，不喜欢的不能再次出现。
+
         //1、根据
         $user  = Db::name('user_address');
 
@@ -52,5 +56,64 @@ class Match
         }
 
         return $result;
+    }
+
+    public static function DealWithThink($uid,$object_id,$level = 0){
+        if($uid == $object_id){
+            Throw new MatchException([
+                    'msg'=>'不能自己匹配自己',
+                    'errorCode'=>70001
+            ]);
+        }
+
+
+
+
+
+    }
+
+    protected function prepareDealWithData($uid,$object_id,$level = 0){
+        //1、整理出key
+        //2、查找是否有这条数据，有则对比the_former 和the_latter是否都为2以上，成功把is_match变为1，并将成功信息反馈给前端
+        //3、
+        $the_latter = 0;
+        $the_former = 0;
+        $data = [];
+        if($uid < $object_id){
+            $key = $uid.'_'.$object_id;
+            $the_former = $level;
+            $match_history = MatchModel::where('key','=',$key)->find();
+            if($match_history){
+                //存在匹配历史
+                if($the_former >= 2 && $match_history->the_latter>= 2 ){
+                    //更新数据
+                    $prepareData['the_former'] = $the_former;
+                    $prepareData['the_former'] = $the_former;
+                    $update_match = MatchModel::where('key','=',$key)->where()->find();
+                }
+
+            }
+
+        }else{
+            $key = $object_id.'_'.$uid;
+            $the_latter = $level;
+            $match_history = MatchModel::where('key','=',$key)->find();
+            if($match_history){
+                //存在匹配历史
+                if($match_history->the_former>= 2 || $match_history->the_latter>= 2 ){
+
+                }
+
+            }
+        }
+
+
+
+        $data['key'] = $key;
+        $data['the_latter'] = $the_latter;
+        $data['the_former'] = $the_former;
+        //不存在匹配历史
+        MatchModel::insert($data);
+
     }
 }

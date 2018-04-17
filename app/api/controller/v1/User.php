@@ -46,8 +46,11 @@ class User extends BaseController
         $user = new UserModel();
         $user->nickname = $_POST['nickname'];
         $user->birthday = $_POST['birthday'];
+
         $user->id = $this->uid;
         $update_result=  $user->isUpdate()->save();
+
+        
         if(!$update_result){
             throw new UserException([
                 'msg'=>'用户信息更新失败',

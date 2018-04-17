@@ -12,6 +12,8 @@ namespace app\api\controller\v1;
 
 use app\api\controller\BaseController;
 use app\api\service\Match as MatchService;
+use app\api\validate\IDMustBePositiveInt;
+use app\api\model\Match as MatchModel;
 
 class Match extends BaseController
 {
@@ -24,8 +26,18 @@ class Match extends BaseController
         $this->id = 1;
     }
 
-    public function getUser(){
+    public function getWaitToMatchUsers(){
         $matchData = MatchService::getWaitToMatchData($this->id);
         return json($matchData,200);
+    }
+
+    public function leftSlide(){
+        (new IDMustBePositiveInt())->goCheck();
+        MatchService::DealWithThink($this->id,input('id'),input('level') );
+
+    }
+
+    public function rightSlide(){
+        return 'todo';
     }
 }

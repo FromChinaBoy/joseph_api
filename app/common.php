@@ -124,6 +124,10 @@ function object2array(&$object) {
     return  $object;
 }
 
+function appEncrypt($val){
+    return '###'.md5($val);
+}
+
 function dd($val){
     echo "<pre>";
     print_r($val);

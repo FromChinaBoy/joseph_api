@@ -52,4 +52,6 @@ Route::post('api/:version/user/update_base','api/:version.User/updateUserBase');
 
 
 //match
-Route::any('api/:version/match/get_user','api/:version.Match/getUser');
+Route::any('api/:version/match/get_waitTo_match_users','api/:version.Match/getWaitToMatchUsers');
+Route::any('api/:version/match/left_slide','api/:version.Match/leftSlide');
+Route::any('api/:version/match/right_slide','api/:version.Match/rightSlide');

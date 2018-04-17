@@ -25,7 +25,6 @@ class Token
         return json([
            'token' => $token,
         ]);
-
     }
 
     //手机账号登录
@@ -37,6 +36,7 @@ class Token
             'token'=>$token
         ]);
     }
+
 
     public function verifyToken($token = ''){
         if(!$token){
