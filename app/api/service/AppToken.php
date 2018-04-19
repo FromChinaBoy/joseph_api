@@ -91,9 +91,9 @@ class AppToken extends Token
         //判断错误次数是否超过限制次数
         if ( $wrongTime > $wTime ) {
             return false;
+        }else{
+            return true;
         }
-
-        return $wrongTime;
 
     }
 

@@ -14,6 +14,7 @@ use app\api\controller\BaseController;
 use app\api\service\Match as MatchService;
 use app\api\validate\IDMustBePositiveInt;
 use app\api\model\Match as MatchModel;
+use app\api\validate\SlideDataValidate;
 
 class Match extends BaseController
 {
@@ -31,13 +32,10 @@ class Match extends BaseController
         return json($matchData,200);
     }
 
-    public function leftSlide(){
-        (new IDMustBePositiveInt())->goCheck();
-        MatchService::DealWithThink($this->id,input('id'),input('level') );
-
+    public function slide(){
+        (new SlideDataValidate())->goCheck();
+        $slide_result =  MatchService::DealWithSlideData($this->id,input('object_id'),input('level') );
+        return json($slide_result);
     }
 
-    public function rightSlide(){
-        return 'todo';
-    }
 }

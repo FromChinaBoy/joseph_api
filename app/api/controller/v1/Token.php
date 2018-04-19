@@ -14,6 +14,7 @@ use app\api\validate\TokenGet;
 use app\api\service\UserToken;
 use app\lib\exception\ParameterException;
 use app\api\service\Token as TokenService;
+use think\Db;
 
 class Token
 {

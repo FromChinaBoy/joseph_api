@@ -9,7 +9,9 @@
 
 namespace app\api\service;
 
+use app\api\model\MatchInfo;
 use app\api\model\Setting as SettingModel;
+use app\api\model\UserFriend;
 use app\lib\exception\MatchException;
 use app\lib\exception\UserException;
 use think\Db;
@@ -58,17 +60,56 @@ class Match
         return $result;
     }
 
-    public static function DealWithThink($uid,$object_id,$level = 0){
-        if($uid == $object_id){
-            Throw new MatchException([
-                    'msg'=>'不能自己匹配自己',
-                    'errorCode'=>70001
-            ]);
-        }
+    public static function DealWithSlideData($uid,$object_id,$level = 0){
+
+        // 1、是否存在这条数据，Y更新，N插入
+        // 2、判断level级别，喜欢进入下一步，不喜欢直接跳过。
+        // 3、是否存在对方数据，Y比较,N结束
+        // 4、对方也喜欢，产生一条匹配成功的好友数据
+
+            // 1、是否存在这条数据，Y更新，N插入
+            $is_self_exist = MatchInfo::where(['user_id'=>$uid,'object_id'=>$object_id])->find();
+            if($is_self_exist){
+                //存在，已经匹配过
+                MatchInfo::where(['user_id'=>$uid,'object_id'=>$object_id])->update(['level'=>$level,'update_time'=>date('Y-m-d H:i:s')]);
+            }else{
+                $matchData = [
+                    'user_id'=>$uid,
+                    'object_id'=>$object_id,
+                    'level'=>$level,
+                    'create_time'=>date('Y-m-d H:i:s'),
+                ];
+                MatchInfo::insert($matchData);
+            }
 
 
+            if($level > 1){
 
+                    // 2、是否存在对方数据，Y比较,N结束
+                    $is_object_exist = MatchInfo::where(['user_id'=>$object_id,'object_id'=>$uid])->find();
+                    if(!$is_object_exist){
+                        return ['status'=>-1];
+                    }
 
+                    // 3、对方也喜欢，产生一条匹配成功的好友数据
+                    if($is_object_exist['level'] > 1){
+                        $create_time = date('Y-m-d H:i:s');
+                        $friendData[0] = [
+                            'user_id'=>$uid,
+                            'friend_id'=>$object_id,
+                            'create_time'=>$create_time,
+                        ];
+                        $friendData[1] = [
+                            'user_id'=>$object_id,
+                            'friend_id'=>$uid,
+                            'create_time'=>$create_time,
+                        ];
+                        Db::name('user_friend')->insertAll($friendData);
+//                        UserFriend::insertAll($friendData);
+                        return ['status'=>1,'msg'=>'对方也喜欢你!'];
+                    }
+            }
+            return ['status'=>-1];
 
     }
 
