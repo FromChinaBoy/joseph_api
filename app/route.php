@@ -41,3 +41,16 @@ Route::put('api/:version/order/delivery','api/:version.Order/delivery');
 //pay
 Route::post('api/:version/pay/pre_order','api/:version.Pay/pre_order');
 Route::post('api/:version/pay/notify','api/:version.Pay/receiveNotify');
+
+
+//user
+Route::post('api/:version/user/userinfo','api/:version.User/getById');
+Route::post('api/:version/user/get_setting','api/:version.Setting/getSetting');
+Route::post('api/:version/user/get_ex_setting','api/:version.Setting/getExSetting');
+
+Route::post('api/:version/user/update_base','api/:version.User/updateUserBase');
+
+
+//match
+Route::any('api/:version/match/get_waitTo_match_users','api/:version.Match/getWaitToMatchUsers');
+Route::any('api/:version/match/slide','api/:version.Match/slide');

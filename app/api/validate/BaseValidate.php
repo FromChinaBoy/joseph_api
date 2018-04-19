@@ -7,14 +7,15 @@ use think\Validate;
 
 class BaseValidate extends Validate{
 
-    public function goCheck()
+    public function goCheck($scene = '')
     {
         // 获取http传入的参数
         // 对这些参数做检验
         $request = Request::instance();
         $params = $request->param();
+
         $result = $this->batch()
-            ->check($params);
+            ->check($params,[],$scene);
         if (!$result)
         {
             $e = new ParameterException([
@@ -73,6 +74,29 @@ class BaseValidate extends Validate{
 
     }
 
+    /**
+     * 校验日期格式是否正确
+     *
+     * @param string $date 日期
+     * @param string $formats 需要检验的格式数组
+     * @return boolean
+     */
+    function checkDateIsValid($date) {
+        $unixTime = strtotime($date);
+        if (!$unixTime) { //strtotime转换不对，日期格式显然不对。
+            return false;
+        }
+
+        $formats = ["Y-m-d","d/m/Y"];
+        //校验日期的有效性，只要满足其中一个格式就OK
+        foreach ($formats as $format) {
+            if (date($format, $unixTime) == $date) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 
 
 

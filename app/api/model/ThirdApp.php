@@ -11,8 +11,8 @@ namespace app\api\model;
 
 class ThirdApp extends BaseModel
 {
-    public static function check($ac,$se){
-        $rst = self::where('app_id','=',$ac)->where('app_secret','=',$se)->find();
+    public static function getUser($ac){
+        $rst = self::where('app_id','=',$ac)->find();
         return $rst;
     }
 

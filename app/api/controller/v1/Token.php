@@ -14,20 +14,21 @@ use app\api\validate\TokenGet;
 use app\api\service\UserToken;
 use app\lib\exception\ParameterException;
 use app\api\service\Token as TokenService;
+use think\Db;
 
 class Token
 {
+    //微信小程序登录
     public function getToken($code = ''){
         (new TokenGet())->goCheck();
         $tk = new UserToken($code);
         $token =$tk->get();
-//        $token =UserToken::get();
         return json([
            'token' => $token,
         ]);
-
     }
 
+    //手机账号登录
     public function getAppToken($ac = '',$se = ''){
         (new ThirdAppValidate())->goCheck();
         $app = new AppToken();
@@ -36,6 +37,7 @@ class Token
             'token'=>$token
         ]);
     }
+
 
     public function verifyToken($token = ''){
         if(!$token){
