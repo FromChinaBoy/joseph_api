@@ -12,7 +12,7 @@ namespace app\lib\exception;
 
 class MatchException extends BaseException
 {
-    public $code = 403;
+    public $code = 404;
     public $msg = '匹配异常';
     public $errorCode = '70000';
 }

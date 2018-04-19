@@ -82,16 +82,16 @@ class Match
                 MatchInfo::insert($matchData);
             }
 
-
+            // 2、判断level级别，喜欢进入下一步，不喜欢直接跳过。
             if($level > 1){
 
-                    // 2、是否存在对方数据，Y比较,N结束
+                    // 3、是否存在对方数据，Y比较,N结束
                     $is_object_exist = MatchInfo::where(['user_id'=>$object_id,'object_id'=>$uid])->find();
                     if(!$is_object_exist){
                         return ['status'=>-1];
                     }
 
-                    // 3、对方也喜欢，产生一条匹配成功的好友数据
+                    // 4、对方也喜欢，产生一条匹配成功的好友数据
                     if($is_object_exist['level'] > 1){
                         $create_time = date('Y-m-d H:i:s');
                         $friendData[0] = [
@@ -104,6 +104,20 @@ class Match
                             'friend_id'=>$uid,
                             'create_time'=>$create_time,
                         ];
+
+                        //删除旧的数据，测试用
+                        $daleteData1 = [
+                            'user_id'=>$uid,
+                            'friend_id'=>$object_id,
+                        ];
+                        $daleteData2 = [
+                            'user_id'=>$object_id,
+                            'friend_id'=>$uid,
+                        ];
+                        Db::name('user_friend')->where($daleteData1)->delete();
+                        Db::name('user_friend')->where($daleteData2)->delete();
+
+
                         Db::name('user_friend')->insertAll($friendData);
 //                        UserFriend::insertAll($friendData);
                         return ['status'=>1,'msg'=>'对方也喜欢你!'];

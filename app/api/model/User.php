@@ -9,6 +9,7 @@
 namespace app\api\model;
 
 
+use app\api\service\ComputeYear;
 use app\api\service\Token;
 
 class User extends BaseModel
@@ -19,6 +20,10 @@ class User extends BaseModel
 
     public function image(){
         return $this->hasMany('UserImage','user_id','id');
+    }
+
+    public function img(){
+        return $this->hasOne('UserImage','user_id','id')->order('sort_order asc');
     }
 
     public function interest(){
@@ -51,6 +56,11 @@ class User extends BaseModel
         $id = 1;
         return self::where('id','=',$id)->update($data);
 
+    }
+
+    public function getBirthdayAttr($birthday)
+    {
+        return ComputeYear::getYear(substr($birthday,0,10));
     }
 
 }
