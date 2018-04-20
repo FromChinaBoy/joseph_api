@@ -50,8 +50,9 @@ class BaseValidate extends Validate{
             return true;
         }
         return false;
-
     }
+
+
     protected function isNotEmpty($value,$rule='',$date='',$field='')
     {
         if(empty($value)){
