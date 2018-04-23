@@ -19,7 +19,7 @@ class User extends BaseModel
     // 定义时间戳字段名
 
     public function image(){
-        return $this->hasMany('UserImage','user_id','id');
+        return $this->hasMany('UserImage','user_id','id')->field('url,user_id');
     }
 
     public function img(){
@@ -27,11 +27,11 @@ class User extends BaseModel
     }
 
     public function interest(){
-        return $this->hasOne('UserInterest','user_id','id');
+        return $this->hasOne('UserInterest','user_id','id')->field('user_id,sport,music,food,movie,cartoon,travel');
     }
 
     public function answer(){
-        return $this->hasMany('UserAnswer','user_id','id');
+        return $this->hasMany('UserAnswer','user_id','id')->field('answer_id,qusetion_id,user_id,answer_desc');
     }
 
     public static function getByopenId($openid){
@@ -45,7 +45,13 @@ class User extends BaseModel
     }
 
     public static function getUserInfo($id){
-        return self::with('image,interest,answer')->where('id','=',$id)->find();
+        $userInfo =  self::with('image,interest,answer')->where('id','=',$id)->find();
+
+        $userInfo->age = ComputeYear::getYear(substr($userInfo->birthday,0,10));
+        $userInfo->activity_time = friend_date(strtotime($userInfo->activity_time));
+        $userInfo->gender = switchGender($userInfo->gender);
+        $userInfo->hidden(['password','mobile','birthday','create_time','delete_time','update_time','status','openid']);
+        return $userInfo->toArray();
     }
 
     public static function UpdateBase($post){
@@ -58,9 +64,5 @@ class User extends BaseModel
 
     }
 
-    public function getBirthdayAttr($birthday)
-    {
-        return ComputeYear::getYear(substr($birthday,0,10));
-    }
 
 }

@@ -47,8 +47,9 @@ Route::post('api/:version/pay/notify','api/:version.Pay/receiveNotify');
 Route::post('api/:version/user/userinfo','api/:version.User/getById');
 Route::post('api/:version/user/get_setting','api/:version.Setting/getSetting');
 Route::post('api/:version/user/get_ex_setting','api/:version.Setting/getExSetting');
-
 Route::post('api/:version/user/update_base','api/:version.User/updateUserBase');
+
+Route::post('api/:version/user/update_activity_time','api/:version.User/updateActivityTime');
 
 
 //match
