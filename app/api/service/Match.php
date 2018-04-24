@@ -21,15 +21,14 @@ use app\api\model\Match as MatchModel;
 class Match
 {
     //        $user_ip= $_SERVER["REMOTE_ADDR"];//获取客户端IP
-    protected $user_ip ='116.7.170.160';
+    protected static $user_ip ='116.7.170.160';
 
     public static function getWaitToMatchData($id = 0){
         //匹配上的不能再次出现，不喜欢的不能再次出现。
 
+        $ip = self::$user_ip;
 
-        //获取用户ip
-
-        $location = get_lat_and_lng_ByIP(self::user_ip);
+        $location = get_lat_and_lng_ByIP($ip);
         if($location['status'] == -1){
             throw new UserException(
                 [
@@ -137,7 +136,7 @@ class Match
     }
 
     public function getDistince($object_id){
-        $user_ip = $this->user_ip;
+        $user_ip = self::$user_ip;
         $location = get_lat_and_lng_ByIP($user_ip);
         if($location['status'] == -1){
             throw new UserException(
